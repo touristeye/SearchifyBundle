@@ -28,5 +28,5 @@
     "autoload": {
         "psr-0": { "TE\\TranslationBundle": "" }
     },
-    "target-dir": "touristeye/TranslationBundle"
+    "target-dir": "TE/TranslationBundle"
 }
