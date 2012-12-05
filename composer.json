@@ -1,12 +1,16 @@
 {
-    "name": "cypresslab/translation-bundle",
+    "name": "touristeye/translation-bundle",
     "type": "symfony-bundle",
-    "description": "Translation bundle for Symfony2 and Doctrine 2",
+    "description": "Translation bundle for Symfony2 and Doctrine 2. One row per language instead of a row per field.",
     "keywords": ["orm", "doctrine", "translation"],
-    "homepage": "https://github.com/matteosister/TranslationBundle",
+    "homepage": "https://github.com/touristeye/TranslationBundle",
     "version": "0.1",
     "license": "LGPL-3.0",
     "authors": [
+        {
+            "name": "Javier F. Escribano",
+            "email": "javier@touristeye.com"
+        },
         {
             "name": "Matteo Giachino",
             "email": "matteog@gmail.com"
@@ -22,7 +26,7 @@
     },
     "minimum-stability": "dev",
     "autoload": {
-        "psr-0": { "Cypress\\TranslationBundle": "" }
+        "psr-0": { "TE\\TranslationBundle": "" }
     },
-    "target-dir": "Cypress/TranslationBundle"
+    "target-dir": "touristeye/TranslationBundle"
 }

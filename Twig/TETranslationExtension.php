@@ -7,12 +7,12 @@
  * Just for fun...
  */
 
-namespace Cypress\TranslationBundle\Twig;
+namespace TE\TranslationBundle\Twig;
 
 /**
  * Twig extension
  */
-class CypressTranslationExtension extends \Twig_Extension
+class TETranslationExtension extends \Twig_Extension
 {
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
@@ -47,7 +47,7 @@ class CypressTranslationExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'cypress_translation';
+        return 'te_translation';
     }
 
     /**
@@ -63,8 +63,8 @@ class CypressTranslationExtension extends \Twig_Extension
      */
     public function translateEntity($entity, $field, $lang = null)
     {
-        if (!is_a($entity, 'Cypress\TranslationBundle\Doctrine\Base\Translatable')) {
-            throw new \Twig_Error_Runtime('The "translate" filter can be applied only to an entity that extends "Cypress\TranslationBundle\Doctrine\Base\Translatable"');
+        if (!is_a($entity, 'TE\TranslationBundle\Doctrine\Base\Translatable')) {
+            throw new \Twig_Error_Runtime('The "translate" filter can be applied only to an entity that extends "TE\TranslationBundle\Doctrine\Base\Translatable"');
         }
         // sf 2.1
         if ($lang == null) {
@@ -99,7 +99,7 @@ class CypressTranslationExtension extends \Twig_Extension
 
     private function generateMethodName($field, $lang, $entity)
     {
-        $method = 'get'.$this->container->get('cypress_translations_bundle.utilities.camel_case')->toCamelCase($field, true);
+        $method = 'get'.$this->container->get('te_translations_bundle.utilities.camel_case')->toCamelCase($field, true);
         if ($lang != $entity->getDefaultLanguage()) {
             $method .= $lang;
         }

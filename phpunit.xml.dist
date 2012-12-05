@@ -4,7 +4,7 @@
         <!--<server name="SYMFONY" value="/path/to/symfony/src" />-->
     </php>
     <testsuites>
-        <testsuite name="CypressTranslationBundle Test Suite">
+        <testsuite name="TETranslationBundle Test Suite">
             <directory suffix="Test.php">./Tests</directory>
         </testsuite>
     </testsuites>

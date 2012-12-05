@@ -4,3 +4,5 @@ vendor
 composer.phar
 Tests/Playground/twig_cache/*
 Tests/Playground/db/test.db-journal
+
+.DS_Store

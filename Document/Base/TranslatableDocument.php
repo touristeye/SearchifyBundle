@@ -7,12 +7,12 @@
  * Just for fun...
  */
 
-namespace Cypress\TranslationBundle\Document\Base;
+namespace TE\TranslationBundle\Document\Base;
 
-use Cypress\TranslationBundle\Document\Base\TranslationDocument,
-    Cypress\TranslationBundle\Exception\RuntimeException;
+use TE\TranslationBundle\Document\Base\TranslationDocument,
+    TE\TranslationBundle\Exception\RuntimeException;
 use Doctrine\Common\Collections\ArrayCollection;
-use Cypress\TranslationBundle\Doctrine\Base\Translatable;
+use TE\TranslationBundle\Doctrine\Base\Translatable;
 
 /**
  * SuperClass for Translatable entities
@@ -68,7 +68,7 @@ abstract class TranslatableDocument extends Translatable
      * @param string $field   field
      * @param string $content content
      *
-     * @throws \Cypress\TranslationBundle\Exception\RuntimeException
+     * @throws \TE\TranslationBundle\Exception\RuntimeException
      * @return void
      */
     public function addOrUpdateTranslation($lang, $field, $content)
@@ -146,7 +146,7 @@ abstract class TranslatableDocument extends Translatable
      * @param string $name      method name
      * @param array  $arguments arguments array
      *
-     * @throws \Cypress\TranslationBundle\Exception\RuntimeException
+     * @throws \TE\TranslationBundle\Exception\RuntimeException
      * @return null|mixed
      */
     public function __call($name, $arguments)
@@ -192,7 +192,7 @@ abstract class TranslatableDocument extends Translatable
     /**
      * add a translation
      *
-     * @param \Cypress\TranslationBundle\Document\Base\TranslationDocument $translation the translation to add
+     * @param \TE\TranslationBundle\Document\Base\TranslationDocument $translation the translation to add
      */
     public function addTranslation(TranslationDocument $translation)
     {
@@ -281,7 +281,7 @@ abstract class TranslatableDocument extends Translatable
      * @param string $property property name
      *
      * @return mixed
-     * @throws \Cypress\TranslationBundle\Exception\RuntimeException
+     * @throws \TE\TranslationBundle\Exception\RuntimeException
      */
     private function getDefaultLanguageValue($method)
     {

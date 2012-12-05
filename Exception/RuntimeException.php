@@ -7,7 +7,7 @@
  * Just for fun...
  */
 
-namespace Cypress\TranslationBundle\Exception;
+namespace TE\TranslationBundle\Exception;
 
 /**
  * RuntimeException for the TranslationBundle

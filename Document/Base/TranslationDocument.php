@@ -7,7 +7,7 @@
  * Just for fun...
  */
 
-namespace Cypress\TranslationBundle\Document\Base;
+namespace TE\TranslationBundle\Document\Base;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 

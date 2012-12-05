@@ -5,11 +5,11 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="vivacom_translation.twig_extension.class">Cypress\TranslationBundle\Twig\CypressTranslationExtension</parameter>
+        <parameter key="te_translation.twig_extension.class">TE\TranslationBundle\Twig\TETranslationExtension</parameter>
     </parameters>
 
     <services>
-        <service id="cypress_translations_bundle.twig.cypress_translation_extension" class="%vivacom_translation.twig_extension.class%">
+        <service id="te_translations_bundle.twig.te_translation_extension" class="%te_translation.twig_extension.class%">
             <tag name="twig.extension" />
             <argument type="service" id="service_container" />
         </service>

@@ -7,9 +7,9 @@ It's always the same
 
 */deps*
 ```
-[CypressTranslationBundle]
-    git=git://github.com/matteosister/TranslationBundle.git
-    target=bundles/Cypress/TranslationBundle
+[TETranslationBundle]
+    git=git://github.com/touristeye/TranslationBundle.git
+    target=bundles/TE/TranslationBundle
 ```
 
 */app/autoload.php*
@@ -17,7 +17,7 @@ It's always the same
 <?php
 $loader->registerNamespaces(array(
     // other namespaces
-    'Cypress' => __DIR__.'/../vendor/bundles',
+    'TE' => __DIR__.'/../vendor/bundles',
 ));
 ```
 
@@ -33,7 +33,7 @@ $ ./bin/vendors install
 ```json
 {
     "require": {
-        "cypresslab-translation-bundle": "dev-master"
+        "touristeye-translation-bundle": "dev-master"
     }
 }
 ```
@@ -65,7 +65,7 @@ class AppKernel extends Kernel
     {
         $bundles = array(
             // other bundles
-            new Cypress\TranslationBundle\CypressTranslationBundle()
+            new TE\TranslationBundle\TETranslationBundle()
         );
     }
 }

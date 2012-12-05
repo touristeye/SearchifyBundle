@@ -7,7 +7,7 @@
  * Just for fun...
  */
 
-namespace Cypress\TranslationBundle\Doctrine\Base;
+namespace TE\TranslationBundle\Doctrine\Base;
 
 abstract class Translatable
 {

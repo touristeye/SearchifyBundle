@@ -1,12 +1,12 @@
 <?php
 
-namespace Cypress\TranslationBundle;
+namespace TE\TranslationBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * TranslationBundle
  */
-class CypressTranslationBundle extends Bundle
+class TETranslationBundle extends Bundle
 {
 }
