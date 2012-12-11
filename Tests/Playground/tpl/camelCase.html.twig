@@ -1,7 +1,0 @@
-{% spaceless %}
-{% if language is defined %}
-    {{ book|translate('theCamelTitle', language) }}
-{% else %}
-    {{ book|translate('theCamelTitle') }}
-{% endif %}
-{% endspaceless %}

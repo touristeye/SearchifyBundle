@@ -1,13 +1,6 @@
 <?php
-/**
- * User: matteo
- * Date: 04/04/12
- * Time: 10.17
- *
- * Just for fun...
- */
 
-namespace TE\TranslationBundle\Exception;
+namespace TE\SearchifyBundle\Exception;
 
 /**
  * RuntimeException for the TranslationBundle

@@ -1,7 +1,0 @@
-{% spaceless %}
-{% if language is defined %}
-    {{ author|translate(['title', 'name'], language) }}
-{% else %}
-    {{ author|translate(['title', 'name']) }}
-{% endif %}
-{% endspaceless %}

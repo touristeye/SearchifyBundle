@@ -1,6 +1,6 @@
 <?php
 
-namespace TE\TranslationBundle\DependencyInjection;
+namespace TE\SearchifyBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class TETranslationExtension extends Extension
+class SearchifyExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -27,8 +27,5 @@ class TETranslationExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
-        if ($config['twig']) {
-            $loader->load('twig.xml');
-        }
     }
 }

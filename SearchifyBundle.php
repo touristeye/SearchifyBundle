@@ -1,12 +1,12 @@
 <?php
 
-namespace TE\TranslationBundle;
+namespace TE\SearchifyBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * TranslationBundle
  */
-class TETranslationBundle extends Bundle
+class SearchifyBundle extends Bundle
 {
 }

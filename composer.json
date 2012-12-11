@@ -1,32 +1,24 @@
 {
-    "name": "touristeye/translation-bundle",
+    "name": "touristeye/searchify-bundle",
     "type": "symfony-bundle",
-    "description": "Translation bundle for Symfony2 and Doctrine 2. One row per language instead of a row per field.",
-    "keywords": ["orm", "doctrine", "translation"],
-    "homepage": "https://github.com/touristeye/TranslationBundle",
+    "description": "Bundle for Searchify.",
+    "keywords": ["searchify", "search"],
+    "homepage": "https://github.com/touristeye/SearchifyBundle",
     "version": "0.1",
     "license": "LGPL-3.0",
     "authors": [
         {
             "name": "Javier F. Escribano",
             "email": "javier@touristeye.com"
-        },
-        {
-            "name": "Matteo Giachino",
-            "email": "matteog@gmail.com"
         }
     ],
     "require": {
         "php": ">=5.3.3",
-        "doctrine/doctrine-bundle": ">=2.1",
-        "doctrine/orm": "2.2.*"
-    },
-    "require-dev": {
-        "twig/twig": "1.9.*"
-    },
+        "touristeye/indextank-php": "master"
+    }
     "minimum-stability": "dev",
     "autoload": {
-        "psr-0": { "TE\\TranslationBundle": "" }
+        "psr-0": { "TE\\SearchifyBundle": "" }
     },
-    "target-dir": "TE/TranslationBundle"
+    "target-dir": "TE/SearchifyBundle"
 }
