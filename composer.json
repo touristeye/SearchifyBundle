@@ -14,8 +14,8 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "touristeye/indextank-php": "master"
-    }
+        "touristeye/indextank-php": "dev-master"
+    },
     "minimum-stability": "dev",
     "autoload": {
         "psr-0": { "TE\\SearchifyBundle": "" }
