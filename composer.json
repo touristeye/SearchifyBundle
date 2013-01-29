@@ -14,7 +14,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "searchify/php-sdk": "dev-master"
+        "searchify/php-sdk": "dev-master@dev"
     },
     "autoload": {
         "psr-0": { "TE\\SearchifyBundle": "" }
