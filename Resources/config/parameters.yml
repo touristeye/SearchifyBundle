@@ -1,0 +1,7 @@
+parameters:
+    searchify.service.class  : TE\SearchifyBundle\Service\SearchifyService
+    searchify.listener.class : TE\SearchifyBundle\Listener\SearchifyListener
+
+    searchify.private_url : ~
+    searchify.public_url  : ~
+    searchify.main_index  : ~

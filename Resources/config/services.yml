@@ -1,0 +1,16 @@
+services:
+    searchify:
+        class:   "%searchify.service.class%"
+        public:  false
+        arguments:
+            - "%searchify.private_url%"
+            - "%searchify.main_index%"
+
+    searchify.listener:
+        class:   "%searchify.listener.class%"
+        public:  false
+        arguments:
+            - @searchify
+        tags:
+            # we want this listener to be the last one to execute
+            - { name: doctrine.event_subscriber, priority: 1 }
