@@ -14,7 +14,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "touristeye/indextank-php": "dev-master"
+        "searchify/php-sdk": "dev-master"
     },
     "minimum-stability": "dev",
     "autoload": {
