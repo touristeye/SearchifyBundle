@@ -7,7 +7,7 @@ use Doctrine\Common\Annotations\Reader,
     Doctrine\Common\Persistence\Mapping\ClassMetadata,
     Doctrine\ORM\Events,
     Doctrine\ORM\Event\LifecycleEventArgs,
-    TE\SearchifyBundle\Service\TE\SearchifyBundle;
+    TE\SearchifyBundle\Service\SearchifyService;
 
 /**
  * SearchifyListener handle Searchable entites
@@ -34,9 +34,10 @@ class SearchifyListener implements EventSubscriber
      * @param Reader $reader
      * @param SearchifyService $searchifyService
      */
-    public function __construct(Reader $reader, SearchableListener $searchifyService)
+    public function __construct(SearchifyService $searchifyService)
     {
-        $this->reader           = $reader;
+        // Reader $reader,
+        // $this->reader           = $reader;
         $this->searchifyService = $searchifyService;
     }
 

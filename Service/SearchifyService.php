@@ -10,11 +10,59 @@ use Searchify\Api,
  */
 class SearchifyService
 {
+    /* Private url on Searchify */
     protected $privateUrl;
 
+    /* Api client */
+    protected $client;
+
+    /* Index we are connected */
     protected $index;
 
-    protected $client;
+    /* Functions you have defined on Searchify to order the results */
+    protected $scoringFunctions;
+
+    /* Fields to get */
+    protected $fetchFields = '';
+
+    /* Do we get categories */
+    protected $fetchCategories = false;
+
+    /* Do we get variables */
+    protected $fetchVariables = false;
+
+    /* Term to search for */
+    protected $term = '';
+
+    /* More filters on the search */
+    protected $extraSearch = '';
+
+    /* Autocomplete search */
+    protected $autocomplete = false;
+
+    /* Fields we want to search on */
+    protected $fieldsToSearch = array();
+
+    /* Filter by categories */
+    protected $categoryFilters = array();
+
+    /* Variables used in function filters */
+    protected $variables = array();
+
+    /* Function filters */
+    protected $functionFilters = array();
+
+    /* Docvar filters */
+    protected $docvarFilters = array();
+
+    /* Scoring tunctions to use */
+    protected $scoringFunction;
+
+    /* Offset */
+    protected $start = 0;
+
+    /* Limit */
+    protected $len = 10;
 
     /**
      * Constructor.
@@ -22,22 +70,223 @@ class SearchifyService
      * @param  string $privateUrl
      * @param  string $index
      */
-    public function __construct($privateUrl, $index)
+    public function __construct($params)
     {
-        $this->privateUrl = $privateUrl;
+        $this->privateUrl = $params['private_url'];
 
-        $this->client = new Api($privateUrl);
-        $this->index  = $this->client->get_index($index);
+        $this->client = new Api($this->privateUrl);
+        $this->index  = $this->client->get_index($params['main_index']);
+
+        $this->scoringFunctions = $params['scoring_functions'];
     }
 
     /**
-     * Search
+     * Set the fields to fetch on Searchify
      *
-     * @param string $model
-     * @param string $s
+     * @param  string $fetchFields
+     * @return SearchifyService
      */
-    public function search($params) {
-        return 'hola';
+    public function setFetchFields($fetchFields) {
+        $this->fetchFields = $fetchFields;
+        return $this;
+    }
+
+    /**
+     * Set to true if we want to fetch the categories
+     *
+     * @param  boolean $fetchCategories
+     * @return SearchifyService
+     */
+    public function setFetchCategories($fetchCategories) {
+        $this->fetchCategories = $fetchCategories;
+        return $this;
+    }
+
+    /**
+     * Set to true if we want to fetch the variables
+     *
+     * @param  boolean $fetchVariables
+     * @return SearchifyService
+     */
+    public function setFetchVariables($fetchVariables) {
+        $this->fetchVariables = $fetchVariables;
+        return $this;
+    }
+
+    /**
+     * Set the term to search
+     *
+     * @param  string $term
+     * @return SearchifyService
+     */
+    public function setTerm($term) {
+        $this->term = $term;
+        return $this;
+    }
+
+    /**
+     * Set extra search. It's useful for when we need to filter by two fields and one of them is autocomplete
+     *
+     * @param  string $extraSearch
+     * @return SearchifyService
+     */
+    public function setExtraSearch($extraSearch) {
+        $this->extraSearch = $extraSearch;
+        return $this;
+    }
+
+    /**
+     * Set the true if we want to do an open search
+     *
+     * @param  boolean $autocomplete
+     * @return SearchifyService
+     */
+    public function setAutocomplete($autocomplete) {
+        $this->autocomplete = $autocomplete;
+        return $this;
+    }
+
+    /**
+     * Set the fields on where we want to search
+     *
+     * @param  array $fieldsToSearch
+     * @return SearchifyService
+     */
+    public function setFieldsToSearch($fieldsToSearch) {
+        $this->fieldsToSearch = $fieldsToSearch;
+        return $this;
+    }
+
+    /**
+     * Set the filters on categories
+     *
+     * @param  array $categoryFilters
+     * @return SearchifyService
+     */
+    public function setCategoryFilters($categoryFilters) {
+        $this->categoryFilters = $categoryFilters;
+        return $this;
+    }
+
+    /**
+     * Set variables
+     *
+     * @param  array $variables
+     * @return SearchifyService
+     */
+    public function setVariables($variables) {
+        $this->variables = $variables;
+        return $this;
+    }
+
+    /**
+     * Set function filters
+     *
+     * @param  array $functionFilters
+     * @return SearchifyService
+     */
+    public function setFunctionFilters($functionFilters) {
+
+        // convert the key to the actual scoring function
+        $filters = array();
+        foreach ( $functionFilters as $key => $data ) {
+            $filters[ $this->scoringFunctions[ $key ] ] = $data;
+        }
+        $this->functionFilters = $filters;
+        return $this;
+    }
+
+    /**
+     * Set docvar filters
+     *
+     * @param  array $docvarFilters
+     * @return SearchifyService
+     */
+    public function setDocvarFilters($docvarFilters) {
+        $this->docvarFilters = $docvarFilters;
+        return $this;
+    }
+
+    /**
+     * Set the scoring function to use
+     *
+     * @param  string $scoringFunction
+     * @return SearchifyService
+     */
+    public function setScoringFunction($scoringFunction) {
+        $this->scoringFunction = $this->scoringFunctions[ $scoringFunction ];
+        return $this;
+    }
+
+    /**
+     * Set the offset
+     *
+     * @param  int $start
+     * @return SearchifyService
+     */
+    public function setFirstResult($start) {
+        $this->start = $start;
+        return $this;
+    }
+
+    /**
+     * Set the limit
+     *
+     * @param  int $len
+     * @return SearchifyService
+     */
+    public function setMaxResults($len) {
+        $this->len = $len;
+        return $this;
+    }
+
+    /**
+     * Get results using all the data
+     *
+     * @return  array
+     */
+    public function getResults() {
+
+        // Create query
+        $query = $this->term;
+
+        // if we want to do a wide search
+        if ( $this->autocomplete ) {
+            $query .= '*';
+        }
+
+        if ( count($this->fieldsToSearch) > 0 ) {
+
+            $temp_query = array();
+
+            foreach ( $this->fieldsToSearch as $field ) {
+                $temp_query[] = $field . ':' . $query;
+            }
+
+            $query = join(' OR ', $temp_query);
+        }
+
+        // if we want to do a wide search
+        if ( $this->extraSearch ) {
+            $query = '(' .$query. ') AND ' . $this->extraSearch;
+        }
+
+        // array with params
+        $params = array(
+            'fetch_fields'     => $this->fetchFields,
+            //'snippet_fields'   => $this->snippetFields,
+            'fetch_categories' => $this->fetchCategories,
+            'fetch_variables'  => $this->fetchVariables,
+            'function_filters' => $this->functionFilters,
+            'category_filters' => $this->categoryFilters,
+            'docvar_filters'   => $this->docvarFilters,
+            'variables'        => $this->variables,
+            'scoring_function' => $this->scoringFunction,
+            'start'            => $this->start,
+            'len'              => $this->len
+        );
+
+        return $this->index->search($query, $params);
     }
 
     /**
@@ -57,218 +306,3 @@ class SearchifyService
 //     public static $ALL_FIELDS_EN = "title_en,url_en,belongsto_en,text_en,url_en";
 //     public static $ALL_FIELDS_ES = "title_es,url_es,belongsto_es,text_es,url_es";
 
-//     public static $SCORING_FUNCTIONS = array(
-//         'recent'   => 0,
-//         'points'   => 1,
-//         'distance' => 2,
-//         'distance_and_points' => 3,
-//         'bounds'   => 4,
-//         'hunch' => 5
-//     );
-
-//     private $index = null;
-
-//     /**
-//      * Returns the objects resulted of the search
-//      *
-//      * @param string $q
-//      * @param string $lang
-//      * @param array $params
-//      *
-//      * @return IndexTankApiResponse with the results
-//      */
-//     public function search( $query, $lang, $params=array() ){
-//         $query = str_replace('(', '', str_replace(')', '', trim($query)));
-
-//         $model = isset($params['model']) ? $params['model'] : '';
-//         $offset = isset($params['offset']) ? $params['offset'] : 0;
-//         $limit = isset($params['limit']) ? $params['limit'] : 20;
-
-//         // if we want to search on the title instead of the text
-//         $searchOnTitle = isset($params['searchOnTitle']) ? $params['searchOnTitle'] : false;
-//         $autocomplete = isset($params['autocomplete']) ? $params['autocomplete'] : false;
-
-//         // For places
-//         $placeLevel = isset($params['placeLevel']) ? $params['placeLevel'] : NULL;
-//         //$hasHotels = isset($params['hasHotels']) ? $params['hasHotels'] : 0;
-//         $category = isset($params['category']) ? $params['category'] : 0;
-//         $publishedEN = isset($params['publishedEN']) ? $params['publishedEN'] : 0;
-//         $publishedES = isset($params['publishedES']) ? $params['publishedES'] : 0;
-//         $parentId = isset($params['parentId']) ? $params['parentId'] : 0;
-//         $basicData = isset($params['basicData']) ? $params['basicData'] : false;
-
-//         $lat = isset($params['lat']) ? $params['lat'] : 0;
-//         $lng = isset($params['lng']) ? $params['lng'] : 0;
-
-//         $west = isset($params['west']) ? $params['west'] : 0;
-//         $east = isset($params['east']) ? $params['east'] : 0;
-//         $north = isset($params['north']) ? $params['north'] : 0;
-//         $south = isset($params['south']) ? $params['south'] : 0;
-
-//         $scoring_function = isset($params['scoring_function'])
-//             ? TESearch::$SCORING_FUNCTIONS[$params['scoring_function']]
-//             : TESearch::$SCORING_FUNCTIONS['points'];
-
-//         // filter by categories
-//         $category_filters = array();
-//         if ( $model )
-//         {
-//             $category_filters['model'] = $model;
-//         }
-//         if ( $placeLevel )
-//         {
-//             $category_filters['placeLevel'] = $placeLevel;
-//         }
-//         /*if ( $hasHotels )
-//         {
-//             $category_filters['hasHotels'] = 'true';
-//         }*/
-//         if ( $category )
-//         {
-//             $category_filters['placeCategory'] = $category;
-//         }
-//         if ( $publishedEN )
-//         {
-//             $category_filters['publishedEN'] = $publishedEN;
-//         }
-//         if ( $publishedES )
-//         {
-//             $category_filters['publishedES'] = $publishedES;
-//         }
-
-//         // autocomplete search - add *
-//         if ( $autocomplete )
-//         {
-//             $query .= '*';
-//         }
-
-//         // autocomplete search
-//         if ( $searchOnTitle )
-//         {
-//             $query = 'title_en:'.$query.' OR title_es:'.$query;
-//         }
-
-//         // If we only want the IDs
-//         if ( $lang == '' )
-//         {
-//             $fetch_fields = '';
-//             $snippet_field = '';
-//             $fetch_categories = false;
-//             $fetch_variables = false;
-//         }
-//         // if we want more info
-//         else
-//         {
-//             // fields to get
-//             $fields_lang = ($basicData ? '' : 'ALL_' ) . 'FIELDS_'.strtoupper($lang);
-//             $fetch_fields = TESearch::$FIELDS . ','. TESearch::$$fields_lang;
-//             $fetch_variables = true;
-
-//             // just return title, lat & lng
-//             if ( $basicData )
-//             {
-//                 $snippet_field = '';
-//                 $fetch_categories = false;
-//             }
-//             // get all the data, get the snippet
-//             else
-//             {
-//                 $snippet_field = '';
-//                 //'text_'.$lang;
-//                 $fetch_categories = true;
-//                 $query_snippet = '';
-//                 $previous_symbol = '';
-
-//                 foreach ( explode(' ', $query) as $keyname )
-//                 {
-//                     // dont search for this special keywords on the snippet
-//                     if ( in_array($keyname, array('AND', 'OR', 'NOT')) )
-//                     {
-//                         $previous_symbol = $keyname;
-//                         continue;
-//                     }
-
-//                     // dont search for a keyname with a previous NOT or -
-//                     if ( $previous_symbol == 'NOT' || substr($keyname, 0, 1) == '-' )
-//                     {
-//                         $previous_symbol = '';
-//                         continue;
-//                     }
-
-//                     // delete + from the keyname
-//                     if ( substr($keyname, 0, 1) == '+' )
-//                     {
-//                         $keyname = substr($keyname, 1);
-//                     }
-
-//                     $query_snippet .= ($query_snippet != '' ? ' AND ' : '') . $snippet_field.':'.$keyname;
-//                 }
-
-
-//                 if ( $query_snippet == '' )
-//                 {
-//                     throw new Exception("You have to search for a word");
-//                 }
-
-//                 //$query .= ' OR (' . $query_snippet . ')';
-//             }
-//         }
-
-//         // search
-//         $params = array(
-//             'scoring_function' => $scoring_function,
-//             'start'            => $offset,
-//             'len'              => $limit
-//         );
-
-//         if ( $snippet_field != '' ) $params['snippet_fields']   = $snippet_field;
-//         if ( $fetch_fields != '' )  $params['fetch_fields']     = $fetch_fields;
-//         if ( $fetch_categories )    $params['fetch_categories'] = 'true';
-//         if ( $fetch_variables )     $params['fetch_variables'] = 'true';
-//         if ( $lat != '' && $lng != '' )
-//         {
-//             $params['variables'] = array(
-//                 0 => $lat,
-//                 1 => $lng
-//             );
-//         }
-
-//         if ( $west != '' && $east != '' && $north != '' && $south != '' )
-//         {
-//             $params['function_filters'] = array(
-//                 $scoring_function => array(array(0.01,NULL))
-//             );
-//             $params['docvar_filters'] = array(
-//                 0 => array(array($north, $south)),
-//                 1 => array(array($west, $east))
-//             );
-//             $params['variables'] = array(
-//                 0 => $lat,
-//                 1 => $lng
-//             );
-
-//             /*$params['variables'] = array(
-//                 0 => $north,
-//                 1 => $south,
-//                 2 => $west,
-//                 3 => $east
-//             );*/
-//         }
-
-//         if ( count($category_filters) > 0 )
-//         {
-//             $params['category_filters'] = json_encode($category_filters);
-//         }
-
-//         // we only want places from a parent
-//         if ( $parentId )
-//         {
-//             $query .= ' parent_id:'.$parentId;
-//         }
-
-//         $res = $this->index->search($query, $params);
-
-//         return $res;
-//     }
-
-// }

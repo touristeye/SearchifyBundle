@@ -1,10 +1,8 @@
 services:
     searchify:
         class:   "%searchify.service.class%"
-        public:  false
         arguments:
-            - "%searchify.private_url%"
-            - "%searchify.main_index%"
+            - "%searchify%"
 
     searchify.listener:
         class:   "%searchify.listener.class%"

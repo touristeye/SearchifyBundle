@@ -24,5 +24,21 @@ class TESearchifyExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
+
+        $this->addClassesToCompile(array(
+            'Searchify\\Api',
+            'Searchify\\Index',
+            'Searchify\\Response',
+            'Searchify\\SearchifyException',
+            'Searchify\\Exception\\HttpException',
+            'Searchify\\Exception\\IndexAlreadyExists',
+            'Searchify\\Exception\\IndexDoesNotExist',
+            'Searchify\\Exception\\InvalidDefinition',
+            'Searchify\\Exception\\InvalidQuery',
+            'Searchify\\Exception\\InvalidResponseFromServer',
+            'Searchify\\Exception\\InvalidUrl',
+            'Searchify\\Exception\\TooManyIndexes',
+            'Searchify\\Exception\\Unauthorized'
+        ));
     }
 }
