@@ -296,13 +296,36 @@ class SearchifyService
     {
         return 'searchify';
     }
+
+    /**
+     * Add an object to searchify
+     *
+     * @param object $entity
+     */
+    public function addDocument($entity) {
+
+        $result = $entity->getArrayToIndex();
+        $this->index->add_document($result['docid'], $result['fields'], $result['variables'], $result['categories']);
+    }
+
+    /**
+     * Add several documents to searchify
+     *
+     * @param array $documents
+     */
+    public function addDocuments($documents) {
+
+        $this->index->add_documents($documents);
+    }
+
+    /**
+     * Remove an object from searchify
+     *
+     * @param object $entity
+     */
+    public function remove($entity) {
+
+        $result = $entity->getArrayToIndex();
+        $this->index->delete_document($result['docid']);
+    }
 }
-
-// class TESearch {
-
-//     public static $FIELDS = "lat,lng,photo,placeCategory,placeLevel,parent_id,countAttractions,countRestaurants,countEntertainment,countActivities,countHotels,countTours,bookingId,hostelbookersId,topruralTitle,topruralParents";
-//     public static $FIELDS_EN = "title_en,belongsto_en,url_en";
-//     public static $FIELDS_ES = "title_es,belongsto_es,url_es";
-//     public static $ALL_FIELDS_EN = "title_en,url_en,belongsto_en,text_en,url_en";
-//     public static $ALL_FIELDS_ES = "title_es,url_es,belongsto_es,text_es,url_es";
-
