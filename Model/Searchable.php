@@ -4,11 +4,25 @@ namespace TE\SearchifyBundle\Model;
 
 trait Searchable {
 
-    /** Fields to get from searchify */
-    protected $fields = '';
+    /**
+     * The class needs to have this field
+     *
+     * public static $fieldsToIndex = array();
+     */
 
     /**
-     * Get array to index
+     * Return array to index from the given array
+     *
+     * @param  array $array
+     * @return array
+     */
+    public static function getArrayToIndexFromArray($array) {
+
+        return array();
+    }
+
+    /**
+     * Return array to index from the current object
      *
      * @return array
      */
