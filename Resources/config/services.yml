@@ -6,9 +6,9 @@ services:
 
     searchify.listener:
         class:   "%searchify.listener.class%"
-        public:  false
         arguments:
             - @searchify
+            - @doctrine.orm.entity_manager
         tags:
-            # we want this listener to be the last one to execute
-            - { name: doctrine.event_subscriber, priority: 1 }
+            # so it reads the method getSubscribedEvents()
+            - { name: kernel.event_subscriber }
