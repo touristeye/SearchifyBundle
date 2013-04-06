@@ -7,3 +7,4 @@ parameters:
         public_url        : ~
         main_index        : ~
         scoring_functions : ~
+        save_changes      : 1

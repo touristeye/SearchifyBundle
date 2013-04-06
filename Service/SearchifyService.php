@@ -58,6 +58,9 @@ class SearchifyService
     /* Scoring tunctions to use */
     protected $scoringFunction;
 
+    /* Check if we should save the changes */
+    protected $saveChanges;
+
     /* Offset */
     protected $start = 0;
 
@@ -78,6 +81,7 @@ class SearchifyService
         $this->index  = $this->client->get_index($params['main_index']);
 
         $this->scoringFunctions = $params['scoring_functions'];
+        $this->saveChanges      = $params['save_changes'];
     }
 
     /**
@@ -304,8 +308,10 @@ class SearchifyService
      */
     public function addDocument($entity) {
 
-        $result = $entity->getArrayToIndex();
-        $this->index->add_document($result['docid'], $result['fields'], $result['variables'], $result['categories']);
+        if ( $this->saveChanges ) {
+            $result = $entity->getArrayToIndex();
+            $this->index->add_document($result['docid'], $result['fields'], $result['variables'], $result['categories']);
+        }
     }
 
     /**
@@ -315,7 +321,9 @@ class SearchifyService
      */
     public function addDocuments($documents) {
 
-        $this->index->add_documents($documents);
+        if ( $this->saveChanges ) {
+            $this->index->add_documents($documents);
+        }
     }
 
     /**
@@ -325,7 +333,9 @@ class SearchifyService
      */
     public function remove($entity) {
 
-        $result = $entity->getArrayToIndex();
-        $this->index->delete_document($result['docid']);
+        if ( $this->saveChanges ) {
+            $result = $entity->getArrayToIndex();
+            $this->index->delete_document($result['docid']);
+        }
     }
 }
