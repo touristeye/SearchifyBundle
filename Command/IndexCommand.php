@@ -62,12 +62,11 @@ class IndexCommand extends ContainerAwareCommand
 
         $classMetadata = $this->em->getClassMetadata($entity);
         $tableName     = $classMetadata->getTableName();
+        $where         = isset($entity::$whereInIndex) ? $entity::$whereInIndex : '';
 
         // get total objects to index
-        $totalObjects = $this->em
-            ->createQuery('SELECT count(o) FROM '.$entity.' o')
-            ->setMaxResults(1)
-            ->getSingleScalarResult();
+        $totalObjects = $this->conn->executeQuery('SELECT count(1) FROM '.$tableName.' as o '
+                . ( $where ? 'where '.$where : ''))->fetchColumn();
         $this->output->writeln($totalObjects. ' objects to index');
 
         // get last id to index. We use the id instead of limit {offset}, {limit} because of sql performance
@@ -112,7 +111,8 @@ class IndexCommand extends ContainerAwareCommand
 
             $results = $this->conn->executeQuery('SELECT ' . join(', ', $select)
                 .' FROM ' . $tableName .' as o ' . $joinTranslation
-                .' where o.id > ' . $lastIndexedId
+                .' where o.id > ' . $lastIndexedId .' '
+                    .( $where ? ' and '.$where : '' )
                 .' order by o.id asc limit '.$MAX)->fetchAll();
 
             $documents = array();
