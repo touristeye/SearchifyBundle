@@ -348,4 +348,16 @@ class SearchifyService
             $this->index->delete_document($result['docid']);
         }
     }
+
+    /**
+     * Renove several documents from searchify
+     *
+     * @param array $docIds
+     */
+    public function removeDocuments($docIds) {
+
+        if ( $this->saveChanges ) {
+            $this->index->delete_documents($docIds);
+        }
+    }
 }
